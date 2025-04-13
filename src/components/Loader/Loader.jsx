@@ -1,10 +1,17 @@
-import css from "./Loader.module.css";
+import { Box } from "@mui/material";
 import ClipLoader from "react-spinners/ClipLoader";
 
-export default function Loader({ loading }) {
+export default function Loader({ loading = true }) {
+  if (!loading) return null;
+
   return (
-    <div className={css.sweetLoading}>
-      <ClipLoader color="#36d7b7" loading={loading} size={150} />
-    </div>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      minHeight="200px"
+    >
+      <ClipLoader color="#36d7b7" size={80} />
+    </Box>
   );
 }

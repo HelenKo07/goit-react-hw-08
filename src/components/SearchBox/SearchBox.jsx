@@ -1,31 +1,51 @@
 import { useDispatch, useSelector } from "react-redux";
-import css from "./SearchBox.module.css";
-import { selectNameFilters, setNameFilter } from "../../redux/filters/slice";
+import {
+  TextField,
+  Stack,
+  Typography,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
+import { setNameFilter } from "../../redux/filters/slice";
+import { selectNameFilters } from "../../redux/filters/selectors";
+import ClearIcon from "@mui/icons-material/Clear";
+import SearchIcon from "@mui/icons-material/Search";
 
 export default function SearchBox() {
   const dispatch = useDispatch();
-
   const filter = useSelector(selectNameFilters) || "";
 
-  const handleFilterSearch = (event) =>
+  const handleFilterSearch = (event) => {
     dispatch(setNameFilter(event.target.value));
+  };
 
-  const handleClearSearch = () => dispatch(setNameFilter(""));
+  const handleClearSearch = () => {
+    dispatch(setNameFilter(""));
+  };
 
   return (
-    <div>
-      <p className={css.searchBox}>Find contacts by name</p>
-      <input
-        className={css.searchInput}
-        type="text"
-        name="name"
-        autoComplete="on"
+    <Stack spacing={2} sx={{ maxWidth: 400 }}>
+      <Typography variant="h6">Find contacts by name</Typography>
+      <TextField
         value={filter}
         onChange={handleFilterSearch}
+        label="Search"
+        variant="outlined"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+          endAdornment: filter && (
+            <InputAdornment position="end">
+              <IconButton onClick={handleClearSearch}>
+                <ClearIcon />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
       />
-      <button className={css.btnClear} onClick={handleClearSearch}>
-        Clear Search
-      </button>
-    </div>
+    </Stack>
   );
 }

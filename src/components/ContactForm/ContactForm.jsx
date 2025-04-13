@@ -1,5 +1,5 @@
+import { TextField, Button, Box, Typography, Paper } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import css from "./ContactForm.module.css";
 import { addContact } from "../../redux/contacts/operations";
 import * as Yup from "yup";
 import { ErrorMessage, Field, Form, Formik } from "formik";
@@ -13,7 +13,6 @@ const initialValues = {
 
 export default function ContactForm() {
   const dispatch = useDispatch();
-
   const form = useSelector(selectContacts);
 
   const handleSubmit = async (values, actions) => {
@@ -41,38 +40,85 @@ export default function ContactForm() {
 
   return (
     <Formik
-      className={css.formik}
+      enableReinitialize={true}
       initialValues={initialValues}
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
     >
-      <Form className={css.form}>
-        <label className={css.formLabel} htmlFor="name">
-          Name
-        </label>
-        <Field
-          className={css.field}
-          id="name"
-          autoComplete="on"
-          type="text"
-          name="name"
-        />
-        <ErrorMessage className={css.error} name="name" component="span" />
-        <label className={css.formLabel} htmlFor="number">
-          Number
-        </label>
-        <Field
-          className={css.field}
-          id="number"
-          autoComplete="on"
-          type="tel"
-          name="number"
-        />
-        <ErrorMessage className={css.error} name="number" component="span" />
-        <button className={css.buttonFormik} type="submit">
-          Add contacts
-        </button>
-      </Form>
+      {({ errors, touched }) => (
+        <Form>
+          <Paper
+            elevation={3}
+            sx={{
+              p: 4,
+              borderRadius: "20px",
+              maxWidth: 500,
+              mx: "auto",
+              mt: 4,
+              backgroundColor: "#f9f9f9",
+              transition: "box-shadow 0.3s ease",
+              "&:hover": {
+                boxShadow: "0 8px 24px rgba(0,0,0,0.1)",
+              },
+            }}
+          >
+            <Typography variant="h5" align="center" gutterBottom>
+              Add New Contact
+            </Typography>
+
+            <Box mb={3}>
+              <Field
+                as={TextField}
+                id="name"
+                name="name"
+                label="Name"
+                type="text"
+                fullWidth
+                variant="outlined"
+                autoComplete="on"
+                error={!!errors.name && touched.name}
+                helperText={<ErrorMessage name="name" />}
+              />
+            </Box>
+
+            <Box mb={3}>
+              <Field
+                as={TextField}
+                id="number"
+                name="number"
+                label="Number"
+                type="tel"
+                fullWidth
+                variant="outlined"
+                autoComplete="on"
+                error={!!errors.number && touched.number}
+                helperText={<ErrorMessage name="number" />}
+              />
+            </Box>
+
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{
+                borderRadius: "30px",
+                py: 1.5,
+                fontWeight: 600,
+                fontSize: "1rem",
+                textTransform: "none",
+                transition: "all 0.3s ease",
+                boxShadow: "none",
+                "&:hover": {
+                  boxShadow: "0 4px 12px rgba(25, 118, 210, 0.4)",
+                },
+              }}
+            >
+              Add Contact
+            </Button>
+          </Paper>
+        </Form>
+      )}
     </Formik>
   );
 }

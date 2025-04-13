@@ -1,28 +1,30 @@
 import { useSelector } from "react-redux";
-import css from "./Navigation.module.css";
-import { NavLink } from "react-router";
 import { selectIsLoggedIn } from "../../redux/auth/selectors";
+import { NavLink } from "react-router-dom";
+import { Button, Stack } from "@mui/material";
+
+const linkStyle = {
+  color: "#fff",
+  textTransform: "none",
+  fontWeight: "bold",
+  "&.active": {
+    backgroundColor: "#1565c0",
+  },
+};
 
 export default function Navigation() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
+
   return (
-    <header className={css.header}>
-      <nav className={css.headerNav}>
-        <ul>
-          <li>
-            <NavLink className={css.navLinkNavigation} to="/">
-              Home
-            </NavLink>
-          </li>
-          <li>
-            {isLoggedIn && (
-              <NavLink className={css.navLinkNavigation} to="/contacts">
-                Contacts
-              </NavLink>
-            )}
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <Stack direction="row" spacing={2}>
+      <Button component={NavLink} to="/" sx={linkStyle}>
+        Home
+      </Button>
+      {isLoggedIn && (
+        <Button component={NavLink} to="/contacts" sx={linkStyle}>
+          Contacts
+        </Button>
+      )}
+    </Stack>
   );
 }

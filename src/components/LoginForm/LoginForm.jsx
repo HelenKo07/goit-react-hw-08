@@ -1,7 +1,7 @@
-import css from "./LoginForm.module.css";
+import { Button, TextField, Box, Container, Paper } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../redux/auth/operations";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { ErrorMessage, Form, Formik } from "formik";
 import * as Yup from "yup";
 
 const initialValues = {
@@ -30,39 +30,59 @@ export default function LoginForm() {
   });
 
   return (
-    <Formik
-      className={css.formikLogin}
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-      validationSchema={validationSchema}
-    >
-      <Form className={css.formLogin}>
-        <label className={css.formLabelLogin} htmlFor="email">
-          Email
-        </label>
-        <Field
-          className={css.fieldLogin}
-          id="email"
-          autoComplete="on"
-          type="email"
-          name="email"
-        />
-        <ErrorMessage className={css.error} name="email" component="span" />
-        <label className={css.formLabelLogin} htmlFor="password">
-          Password
-        </label>
-        <Field
-          className={css.fieldLogin}
-          id="password"
-          autoComplete="on"
-          type="password"
-          name="password"
-        />
-        <ErrorMessage className={css.error} name="password" component="span" />
-        <button className={css.buttonFormikLogin} type="submit">
-          Log In
-        </button>
-      </Form>
-    </Formik>
+    <Container maxWidth="xs">
+      <Paper
+        elevation={3}
+        sx={{
+          p: 4,
+          borderRadius: 3,
+          backgroundColor: "#ffffff",
+          mt: 1,
+        }}
+      >
+        <Formik
+          enableReinitialize={true}
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+          validationSchema={validationSchema}
+        >
+          {({ errors, touched, handleChange, values }) => (
+            <Form>
+              <Box display="flex" flexDirection="column" gap={3}>
+                <TextField
+                  label="Email"
+                  name="email"
+                  type="email"
+                  fullWidth
+                  value={values.email}
+                  onChange={handleChange}
+                  error={touched.email && Boolean(errors.email)}
+                  helperText={<ErrorMessage name="email" />}
+                />
+                <TextField
+                  label="Password"
+                  name="password"
+                  type="password"
+                  fullWidth
+                  value={values.password}
+                  onChange={handleChange}
+                  error={touched.password && Boolean(errors.password)}
+                  helperText={<ErrorMessage name="password" />}
+                />
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  sx={{ borderRadius: 2, py: 1.5, fontWeight: "bold" }}
+                >
+                  Log In
+                </Button>
+              </Box>
+            </Form>
+          )}
+        </Formik>
+      </Paper>
+    </Container>
   );
 }
