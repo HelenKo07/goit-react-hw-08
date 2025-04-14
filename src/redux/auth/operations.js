@@ -24,11 +24,6 @@ export const createNewUser = createAsyncThunk(
   }
 );
 
-// alena.gorova93@gmail.com
-// Ari10072023@
-// alenas.gorova93@gmail.com
-// Ari10072023
-
 export const loginUser = createAsyncThunk(
   "auth/login",
   async (loggedIn, thunkAPI) => {
